@@ -4,62 +4,44 @@ let count = 0;
 const button = document.getElementById("funButton");
 const message = document.getElementById("message");
 const counter = document.getElementById("counter");
+const flash = document.getElementById("flash");
+const sound = document.getElementById("laughSound");
 
 
 
 const jokes = [
 
-"😂 فکر کردی نجات پیدا کردی؟ تازه شروع شد!",
+"😂 فکر کردی نجات پیدا کردی؟",
 
-"🤖 ربات مسخره‌باز فعال شد!",
+"🤖 هوش مصنوعی مسخره‌باز فعال شد!",
 
-"🚨 هشدار! مقدار خنده شما کم است!",
+"🤣 دوباره برگشتی؟",
 
-"🤣 سیستم اعلام کرد زیادی جدی هستی!",
-
-"👀 دوباره کلیک کردی؟ من دیدمت!",
+"🚨 وضعیت اضطراری: خنده لازم است!",
 
 "🐒 یک میمون کنترل سیستم را گرفته!",
 
-"🍕 جایزه شما یک پیتزای خیالی است!",
+"👀 من دیدمت که کلیک کردی!",
 
-"😎 شما قهرمان فشار دادن دکمه شدید!",
+"🔥 سطح دیوانگی افزایش یافت!",
 
-"🧠 مغز ربات در حال پردازش... نتیجه: هیچ!",
+"😈 این دکمه دوست دارد اذیتت کند!",
 
-"😂 خنده با موفقیت ارسال شد!",
+"🤡 سیستم جدی بودن شما را پیدا نکرد!",
 
-"🤡 بخش مسخره‌بازی آماده خدمت است!",
+"😂 هنوز امید داری؟"
 
-"🐱 گربه‌های اینترنتی تایید کردند!",
-
-"⚠️ خطا 404: جدیت پیدا نشد!",
-
-"🛸 موجودات فضایی هم دیدند!",
-
-"🔥 سطح مسخره‌بازی افزایش یافت!",
-
-"😈 دکمه گفت دوباره منو بزن!",
-
-"🥳 جشن بدون دلیل شروع شد!",
-
-"💀 سیستم تلاش کرد جدی باشد و شکست خورد!",
-
-"🎮 مرحله جدید باز شد!",
-
-"😜 تو عاشق این دکمه شدی!"
 ];
 
 
 
 
-// کلیک اصلی
+// کلیک دکمه
 
-button.addEventListener("click", function(){
+button.addEventListener("click",()=>{
 
 
 count++;
-
 
 
 counter.innerHTML =
@@ -67,10 +49,9 @@ counter.innerHTML =
 
 
 
-// پیام ویژه هر 10 کلیک
+// پیام هر 10 کلیک
 
 if(count % 10 === 0){
-
 
 message.innerHTML =
 "😂 کصخل مگه نجات پیدا نکردی؟ باز برگشتی؟ 🤣";
@@ -79,19 +60,18 @@ message.innerHTML =
 }else{
 
 
-let random =
+let r =
 Math.floor(Math.random()*jokes.length);
 
 
 message.innerHTML =
-jokes[random];
-
+jokes[r];
 
 }
 
 
 
-// لرزش صفحه
+// لرزش
 
 document.body.classList.add("shake");
 
@@ -104,15 +84,9 @@ document.body.classList.remove("shake");
 
 
 
-
-// نور قرمز
-
-let flash =
-document.getElementById("flash");
-
+// نور
 
 if(flash){
-
 
 flash.classList.add("flash-active");
 
@@ -123,21 +97,15 @@ flash.classList.remove("flash-active");
 
 },500);
 
-
 }
-
 
 
 
 // صدا
 
-let sound =
-document.getElementById("laughSound");
-
-
 if(sound){
 
-sound.currentTime = 0;
+sound.currentTime=0;
 
 sound.play().catch(()=>{});
 
@@ -145,198 +113,173 @@ sound.play().catch(()=>{});
 
 
 
+// ایموجی
+
+createEmoji();
 
 
-// انفجار ایموجی
 
-for(let i=0;i<8;i++){
+// فرار بعد از 3 کلیک
+
+if(count >=3){
+
+moveButton();
+
+}
 
 
-let emoji =
+});
+
+
+
+
+
+
+// حرکت امن دکمه
+
+function moveButton(){
+
+
+button.style.position="fixed";
+
+
+let width =
+button.offsetWidth;
+
+
+let height =
+button.offsetHeight;
+
+
+
+let maxX =
+window.innerWidth - width - 30;
+
+
+let maxY =
+window.innerHeight - height - 30;
+
+
+
+let x =
+Math.random()*maxX;
+
+
+let y =
+Math.random()*maxY;
+
+
+
+button.style.left =
+Math.max(20,x)+"px";
+
+
+button.style.top =
+Math.max(20,y)+"px";
+
+
+}
+
+
+
+
+
+
+
+// موبایل: نزدیک شدن انگشت
+
+document.addEventListener(
+"touchstart",
+(e)=>{
+
+
+let touch =
+e.touches[0];
+
+
+let rect =
+button.getBoundingClientRect();
+
+
+
+let bx =
+rect.left + rect.width/2;
+
+
+let by =
+rect.top + rect.height/2;
+
+
+
+let distance =
+Math.sqrt(
+
+Math.pow(touch.clientX-bx,2)+
+
+Math.pow(touch.clientY-by,2)
+
+);
+
+
+
+if(distance < 150){
+
+moveButton();
+
+
+message.innerHTML =
+"🏃‍♂️ نههههه! انگشتت نزدیک شد!";
+
+
+}
+
+
+});
+
+
+
+
+
+
+
+// ساخت ایموجی
+
+function createEmoji(){
+
+
+for(let i=0;i<6;i++){
+
+
+let e =
 document.createElement("div");
 
 
-emoji.className="emoji";
+e.className="emoji";
 
 
-emoji.innerHTML="😂";
+e.innerHTML="😂";
 
 
-emoji.style.left =
+e.style.left =
 Math.random()*window.innerWidth+"px";
 
 
-emoji.style.top =
+e.style.top =
 Math.random()*window.innerHeight+"px";
 
 
-
-document.body.appendChild(emoji);
+document.body.appendChild(e);
 
 
 
 setTimeout(()=>{
 
-emoji.remove();
+e.remove();
 
 },1000);
 
 
 }
 
-
-
-
-// فرار دکمه بعد از 3 بار کلیک
-
-
-if(count >= 3){
-
-    let box = button.getBoundingClientRect();
-
-    let maxX = window.innerWidth - box.width - 40;
-    let maxY = window.innerHeight - box.height - 40;
-
-
-    let x = Math.floor(Math.random() * maxX);
-    let y = Math.floor(Math.random() * maxY);
-
-
-    button.style.position="absolute";
-    button.style.left = x + "px";
-    button.style.top = y + "px";
-
-}
-
-
-});
-// ==============================
-// حالت موبایل - فرار از انگشت 📱
-// ==============================
-
-let lastTouchTime = 0;
-
-document.addEventListener("touchstart", function(event){
-
-    // جلوگیری از اجرای دوباره به خاطر لمس‌های خیلی سریع
-    const now = Date.now();
-
-    if(now - lastTouchTime < 250){
-        return;
-    }
-
-    lastTouchTime = now;
-
-
-    const touch = event.touches[0];
-
-    if(!touch){
-        return;
-    }
-
-
-    const rect = button.getBoundingClientRect();
-
-
-    // مرکز دکمه
-    const buttonX = rect.left + rect.width / 2;
-    const buttonY = rect.top + rect.height / 2;
-
-
-    // فاصله انگشت تا دکمه
-    const distance = Math.sqrt(
-
-        Math.pow(touch.clientX - buttonX, 2) +
-
-        Math.pow(touch.clientY - buttonY, 2)
-
-    );
-
-
-    // اگر انگشت به دکمه نزدیک شد
-    if(distance < 140){
-
-        escapeFromFinger();
-
-    }
-
-});
-
-
-
-function escapeFromFinger(){
-
-    // اگر هنوز وارد حالت فرار نشده
-    button.style.position = "fixed";
-
-    button.style.zIndex = "9999";
-
-
-    const padding = 20;
-
-
-    const maxX =
-        window.innerWidth -
-        button.offsetWidth -
-        padding;
-
-
-    const maxY =
-        window.innerHeight -
-        button.offsetHeight -
-        padding;
-
-
-    // مختصات امن
-    const x =
-        padding +
-        Math.random() * Math.max(1, maxX - padding);
-
-
-    const y =
-        padding +
-        Math.random() * Math.max(1, maxY - padding);
-
-
-    button.style.left = x + "px";
-
-    button.style.top = y + "px";
-
-
-    // پیام
-    if(message){
-
-        message.innerHTML =
-        "🏃‍♂️💨 نههههه! انگشتت نزدیک شد!";
-
-    }
-
-
-    // لرزش کوچک
-    button.animate(
-
-        [
-            {
-                transform:"scale(1)"
-            },
-
-            {
-                transform:"scale(1.15) rotate(-5deg)"
-            },
-
-            {
-                transform:"scale(1) rotate(5deg)"
-            },
-
-            {
-                transform:"scale(1)"
-            }
-        ],
-
-        {
-            duration:350
-        }
-
-    );
 
 }
