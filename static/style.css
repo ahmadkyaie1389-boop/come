@@ -736,3 +736,12 @@ h2{
     }
 
 }
+#funButton{
+
+    position: relative !important;
+
+    left:auto !important;
+
+    top:auto !important;
+
+}
