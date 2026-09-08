@@ -159,3 +159,33 @@ emoji.remove();
 
 
 });
+let progress = 0;
+
+let loading = setInterval(()=>{
+
+progress += 5;
+
+document.getElementById(
+"loading-progress"
+).style.width = progress+"%";
+
+
+document.getElementById(
+"loading-text"
+).innerHTML =
+progress+"%";
+
+
+if(progress>=100){
+
+clearInterval(loading);
+
+
+document.getElementById(
+"loader"
+).style.display="none";
+
+}
+
+
+},100);
